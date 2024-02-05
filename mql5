@@ -1,0 +1,151 @@
+mql5
+/*
+Program name: ICT Breakers Multi TF MT5
+Developer's site: forexroboteasy.com
+Development: Forex Robot Easy Team
+*/
+
+// Include necessary libraries
+#include <Trade\Trade.mqh>
+#include <ChartObjects\ChartObjects.mqh>
+
+// Define input parameters
+input int Timeframe1 = PERIOD_M5;
+input int Timeframe2 = PERIOD_M15;
+input int Timeframe3 = PERIOD_H1;
+input int Timeframe4 = PERIOD_H4;
+
+input double LotSize = 0.01;
+input double StopLoss = 50;
+input double TakeProfit = 100;
+
+// Define global variables
+datetime lastTradeTime;
+bool isTradingAllowed = true;
+
+// Initialize trade module
+CTrade trade;
+
+// Define function to check if Breaker Blocks condition is met
+bool isBreakerBlocksMet()
+{
+    // Add your Breaker Blocks logic here
+    // Return true if Breaker Blocks condition is met, otherwise return false
+}
+
+// Define function to execute trade
+void executeTrade()
+{
+    // Check if trading is allowed
+    if (isTradingAllowed)
+    {
+        // Check if Breaker Blocks condition is met
+        if (isBreakerBlocksMet())
+        {
+            // Open a trade
+            trade.Buy(LotSize, NULL, StopLoss, TakeProfit, NULL);
+            
+            // Store the trade execution time
+            lastTradeTime = TimeCurrent();
+        }
+    }
+}
+
+// Define function to initialize the code
+void OnInit()
+{
+    // Set the required timeframes for analysis
+    ChartSetInteger(0, CHART_FIRST_VISIBLE_BAR, iBarShift(NULL, Timeframe1, Time[0]));
+    ChartSetInteger(0, CHART_VISIBLE_BARS, MathMax(ChartGetInteger(0, CHART_VISIBLE_BARS), iBarShift(NULL, Timeframe4, Time[0])));
+}
+
+// Define function to handle new bar event
+void OnNewBar()
+{
+    // Check for new bar in the highest timeframe
+    if (Timeframe4 == Period())
+    {
+        // Execute trade if necessary
+        executeTrade();
+    }
+}
+
+// Define function to handle tick event
+void OnTick()
+{
+    // Check if a trade has been executed
+    if (lastTradeTime != TimeCurrent())
+    {
+        // Execute trade if necessary
+        executeTrade();
+    }
+}
+
+// Define function to handle deinitialization
+void OnDeinit(const int reason)
+{
+    // Add your deinitialization logic here
+}
+
+// Define function to start trading
+void startTrading()
+{
+    // Allow trading
+    isTradingAllowed = true;
+}
+
+// Define function to stop trading
+void stopTrading()
+{
+    // Disallow trading
+    isTradingAllowed = false;
+}
+
+// Define function to get current trade status
+bool isTrading()
+{
+    return isTradingAllowed;
+}
+
+// Define function to get last trade execution time
+datetime getLastTradeTime()
+{
+    return lastTradeTime;
+}
+
+// Define function to get the version of the software
+string getVersion()
+{
+    return 'ICT Breakers Multi TF MT5 v1.0';
+}
+
+// Define function to provide technical support
+void provideTechnicalSupport()
+{
+    // Add your technical support logic here
+}
+
+// Define function to deliver the final code
+void deliverFinalCode()
+{
+    // Add your code delivery logic here
+}
+
+// Define function to test the code
+void testCode()
+{
+    // Add your code testing logic here
+}
+
+// Define function to handle additional requirements or modifications
+void handleAdditionalRequirements()
+{
+    // Add your additional requirements handling logic here
+}
+
+// Define function to handle main execution flow
+void OnStart()
+{
+    // Add your main execution flow logic here
+}
+
